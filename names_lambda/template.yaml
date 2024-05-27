@@ -12,7 +12,7 @@ Resources:
       CodeUri: src/post_names.js
       Environment:
         Variables:
-          TABLE_NAME: !ImportValue SStudentTable
+          TABLE_NAME: !ImportValue StudentTable
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !ImportValue StudentTable
