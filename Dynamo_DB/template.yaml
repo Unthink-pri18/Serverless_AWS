@@ -33,11 +33,11 @@ Resources:
       TableName: StudentTable
 
 Outputs:
-  StudentTableName:
+  StudentTable:
     Description: "The name of the DynamoDB table for students"
     Value: !Ref StudentTable
     Export:
-      Name: StudentTableName
+      Name: StudentTable
   
   itemsDB:
     Description: "The name of the DynamoDB table"
