@@ -33,7 +33,7 @@ Resources:
       FunctionName: !GetAtt HelloWorldFunction.Arn
       Action: 'lambda:InvokeFunction'
       Principal: 'apigateway.amazonaws.com'
-      SourceArns:
+      SourceArn:
         - 'arn:aws:execute-api:ap-south-1:058264479354:svvu88js31/*/GET/hello'
         - 'arn:aws:execute-api:ap-south-1:058264479354:svvu88js31/*/GET/test'
 
