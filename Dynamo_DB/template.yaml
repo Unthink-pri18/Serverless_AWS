@@ -39,7 +39,7 @@ Outputs:
     Export:
       Name: StudentTableName
   
-  DynamoDBTableName:
+  itemsDB:
     Description: "The name of the DynamoDB table"
     Value: !Ref itemsDB
     Export:
