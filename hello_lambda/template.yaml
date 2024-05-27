@@ -134,12 +134,39 @@ Resources:
       CodeUri: src/
       Handler: app.lambdaHandler
       Runtime: nodejs20.x
-      Events:
-        HelloWorldApi:
-          Type: Api
-          Properties:
-            Path: /hello
-            Method: get
+  
+  HelloWorldApi:
+    Type: 'AWS::Serverless::Api'
+    Properties:
+      Name: HelloWorldApi
+      StageName: prod
+      DefinitionBody:
+        openapi: 3.0.1
+        info:
+          title: HelloWorld API
+          version: '1.0'
+        paths:
+          /hello:
+            get:
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorldFunction.Arn}/invocations
+                httpMethod: POST
+                type: aws_proxy
+            post:
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorldFunction.Arn}/invocations
+                httpMethod: POST
+                type: aws_proxy
+  HelloWorldFunctionPermission:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+    FunctionName: !GetAtt HelloWorldFunction.Arn
+    Action: 'lambda:InvokeFunction'
+    Principal: 'apigateway.amazonaws.com'
+    SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HelloWorldApi}/prod/GET/hello'
+
 
 Outputs:
   HelloWorldApi:
