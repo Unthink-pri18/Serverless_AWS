@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: >
+  SAM Template to create a DynamoDB table for the items and names table
+
+Resources:
+  itemsDB:
+    Type: 'AWS::DynamoDB::Table'
+    Properties: 
+      AttributeDefinitions: 
+        - AttributeName: id
+          AttributeType: S
+      KeySchema: 
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput: 
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      TableName: itemsDB
+
+  StudentTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties: 
+      AttributeDefinitions: 
+        - AttributeName: studentId
+          AttributeType: S
+      KeySchema: 
+        - AttributeName: studentId
+          KeyType: HASH
+      ProvisionedThroughput: 
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      TableName: StudentTable
+
+Outputs:
+  StudentTableName:
+    Description: "The name of the DynamoDB table for students"
+    Value: !Ref StudentTable
+    Export:
+      Name: StudentTableName
+  
+  DynamoDBTableName:
+    Description: "The name of the DynamoDB table"
+    Value: !Ref itemsDB
+    Export:
+      Name: itemsDB
+      
