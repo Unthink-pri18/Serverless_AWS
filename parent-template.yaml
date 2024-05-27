@@ -1,0 +1,12 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Resources:
+  Lambda1Stack:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL: 'REPLACE_WITH_LAMBDA1_URL'
+
+  Lambda2Stack:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL: 'REPLACE_WITH_LAMBDA2_URL'
