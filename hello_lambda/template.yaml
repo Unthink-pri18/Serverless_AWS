@@ -115,7 +115,6 @@
 #       Action: 'lambda:InvokeFunction'
 #       Principal: 'apigateway.amazonaws.com'
 #       SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}/*/*/*'
-
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
@@ -149,29 +148,29 @@ Resources:
           /hello:
             get:
               x-amazon-apigateway-integration:
-                uri:
+                uri: 
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorldFunction.Arn}/invocations
                 httpMethod: POST
                 type: aws_proxy
             post:
               x-amazon-apigateway-integration:
-                uri:
+                uri: 
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorldFunction.Arn}/invocations
                 httpMethod: POST
                 type: aws_proxy
+                
   HelloWorldFunctionPermission:
     Type: 'AWS::Lambda::Permission'
     Properties:
-    FunctionName: !GetAtt HelloWorldFunction.Arn
-    Action: 'lambda:InvokeFunction'
-    Principal: 'apigateway.amazonaws.com'
-    SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HelloWorldApi}/prod/GET/hello'
-
+      FunctionName: !GetAtt HelloWorldFunction.Arn
+      Action: 'lambda:InvokeFunction'
+      Principal: 'apigateway.amazonaws.com'
+      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HelloWorldApi}/prod/GET/hello'
 
 Outputs:
   HelloWorldApi:
     Description: "API Gateway endpoint URL for Prod stage for HelloWorld function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello"
+    Value: !Sub "https://${HelloWorldApi}.execute-api.${AWS::Region}.amazonaws.com/prod/hello"
   HelloWorldFunction:
     Description: "HelloWorld Lambda Function ARN"
     Value: !GetAtt HelloWorldFunction.Arn
