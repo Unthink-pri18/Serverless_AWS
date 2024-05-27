@@ -9,7 +9,7 @@ Resources:
     Properties:
       Handler: index.handler
       Runtime: nodejs20.x
-      CodeUri: src/
+      CodeUri: src/post_names.js
       Environment:
         Variables:
           TABLE_NAME: !ImportValue SStudentTable
@@ -27,8 +27,8 @@ Resources:
     Type: 'AWS::Serverless::Function'
     Properties:
       Handler: index.handler
-      Runtime: nodejs14.x
-      CodeUri: src/
+      Runtime: nodejs20.x
+      CodeUri: src/get_names.js
       Environment:
         Variables:
           TABLE_NAME: !ImportValue StudentTable

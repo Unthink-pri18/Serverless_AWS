@@ -1,4 +1,4 @@
-yamlAWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
 Description: >
   SAM Template to create a Lambda function for POST requests to a DynamoDB table
@@ -9,7 +9,7 @@ Resources:
     Properties:
       Handler: index.handler
       Runtime: nodejs20.x
-      CodeUri: src/
+      CodeUri: src/post_lambda.js
       Environment:
         Variables:
           TABLE_NAME: !ImportValue itemsDB
@@ -28,7 +28,7 @@ Resources:
     Properties:
       Handler: index.handler
       Runtime: nodejs14.x
-      CodeUri: src/
+      CodeUri: src/get_lambda.js
       Environment:
         Variables:
           TABLE_NAME: !ImportValue itemsDB
