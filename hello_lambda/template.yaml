@@ -13,7 +13,7 @@ Resources:
   HelloWorldFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: hello-world-function/
+      CodeUri: src/index.js
       Handler: app.lambdaHandler
       Runtime: nodejs14.x
       Events:
