@@ -38,80 +38,113 @@
 #     Description: "HelloWorld Lambda Function ARN"
 #     Value: !GetAtt HelloWorldFunction.Arn
 
+# AWSTemplateFormatVersion: '2010-09-09'
+# Transform: 'AWS::Serverless-2016-10-31'
+# Parameters:
+#   StageName:
+#     Type: String
+#     Default: Stage
+# Resources:
+#   HelloWorldFunction:
+#     Type: 'AWS::Serverless::Function'
+#     Properties:
+#       Handler: app.lambdaHandler
+#       Runtime: nodejs20.x
+#       CodeUri: .
+#       MemorySize: 128
+#       Timeout: 5
+
+#   # Define the API Gateway
+#   ApiGatewayRestApi:
+#     Type: 'AWS::ApiGateway::RestApi'
+#     Properties:
+#       Name: !Sub 'api-${StageName}'
+
+#   # Define the /hello resource
+#   ApiGatewayResourceHello:
+#     Type: 'AWS::ApiGateway::Resource'
+#     Properties:
+#       ParentId: !GetAtt ApiGatewayRestApi.RootResourceId
+#       PathPart: 'hello'
+#       RestApiId: !Ref ApiGatewayRestApi
+
+#   # Define the GET method for /hello
+#   ApiGatewayMethodGetHello:
+#     Type: 'AWS::ApiGateway::Method'
+#     Properties:
+#       AuthorizationType: 'NONE'
+#       HttpMethod: 'GET'
+#       ResourceId: !Ref ApiGatewayResourceHello
+#       RestApiId: !Ref ApiGatewayRestApi
+#       Integration:
+#         Type: 'AWS_PROXY'
+#         IntegrationHttpMethod: 'POST'
+#         Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorldFunction.Arn}/invocations'
+
+#   # Define the POST method for /hello
+#   ApiGatewayMethodPostHello:
+#     Type: 'AWS::ApiGateway::Method'
+#     Properties:
+#       AuthorizationType: 'NONE'
+#       HttpMethod: 'POST'
+#       ResourceId: !Ref ApiGatewayResourceHello
+#       RestApiId: !Ref ApiGatewayRestApi
+#       Integration:
+#         Type: 'AWS_PROXY'
+#         IntegrationHttpMethod: 'POST'
+#         Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorldFunction.Arn}/invocations'
+
+#   # Define the PUT method for /hello
+#   ApiGatewayMethodPutHello:
+#     Type: 'AWS::ApiGateway::Method'
+#     Properties:
+#       AuthorizationType: 'NONE'
+#       HttpMethod: 'PUT'
+#       ResourceId: !Ref ApiGatewayResourceHello
+#       RestApiId: !Ref ApiGatewayRestApi
+#       Integration:
+#         Type: 'AWS_PROXY'
+#         IntegrationHttpMethod: 'POST'
+#         Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorldFunction.Arn}/invocations'
+
+#   # Manually create a single Lambda permission with a wildcard SourceArn
+#   LambdaInvokePermission:
+#     Type: 'AWS::Lambda::Permission'
+#     Properties:
+#       FunctionName: !GetAtt HelloWorldFunction.Arn
+#       Action: 'lambda:InvokeFunction'
+#       Principal: 'apigateway.amazonaws.com'
+#       SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}/*/*/*'
+
 AWSTemplateFormatVersion: '2010-09-09'
-Transform: 'AWS::Serverless-2016-10-31'
-Parameters:
-  StageName:
-    Type: String
-    Default: Stage
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  HelloWorldApp
+
+  Sample SAM Template for HelloWorldApp
+
+Globals:
+  Function:
+    Timeout: 3
+
 Resources:
   HelloWorldFunction:
-    Type: 'AWS::Serverless::Function'
+    Type: AWS::Serverless::Function
     Properties:
+      CodeUri: src/
       Handler: app.lambdaHandler
       Runtime: nodejs20.x
-      CodeUri: .
-      MemorySize: 128
-      Timeout: 5
+      Events:
+        HelloWorldApi:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: get
 
-  # Define the API Gateway
-  ApiGatewayRestApi:
-    Type: 'AWS::ApiGateway::RestApi'
-    Properties:
-      Name: !Sub 'api-${StageName}'
-
-  # Define the /hello resource
-  ApiGatewayResourceHello:
-    Type: 'AWS::ApiGateway::Resource'
-    Properties:
-      ParentId: !GetAtt ApiGatewayRestApi.RootResourceId
-      PathPart: 'hello'
-      RestApiId: !Ref ApiGatewayRestApi
-
-  # Define the GET method for /hello
-  ApiGatewayMethodGetHello:
-    Type: 'AWS::ApiGateway::Method'
-    Properties:
-      AuthorizationType: 'NONE'
-      HttpMethod: 'GET'
-      ResourceId: !Ref ApiGatewayResourceHello
-      RestApiId: !Ref ApiGatewayRestApi
-      Integration:
-        Type: 'AWS_PROXY'
-        IntegrationHttpMethod: 'POST'
-        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorldFunction.Arn}/invocations'
-
-  # Define the POST method for /hello
-  ApiGatewayMethodPostHello:
-    Type: 'AWS::ApiGateway::Method'
-    Properties:
-      AuthorizationType: 'NONE'
-      HttpMethod: 'POST'
-      ResourceId: !Ref ApiGatewayResourceHello
-      RestApiId: !Ref ApiGatewayRestApi
-      Integration:
-        Type: 'AWS_PROXY'
-        IntegrationHttpMethod: 'POST'
-        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorldFunction.Arn}/invocations'
-
-  # Define the PUT method for /hello
-  ApiGatewayMethodPutHello:
-    Type: 'AWS::ApiGateway::Method'
-    Properties:
-      AuthorizationType: 'NONE'
-      HttpMethod: 'PUT'
-      ResourceId: !Ref ApiGatewayResourceHello
-      RestApiId: !Ref ApiGatewayRestApi
-      Integration:
-        Type: 'AWS_PROXY'
-        IntegrationHttpMethod: 'POST'
-        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorldFunction.Arn}/invocations'
-
-  # Manually create a single Lambda permission with a wildcard SourceArn
-  LambdaInvokePermission:
-    Type: 'AWS::Lambda::Permission'
-    Properties:
-      FunctionName: !GetAtt HelloWorldFunction.Arn
-      Action: 'lambda:InvokeFunction'
-      Principal: 'apigateway.amazonaws.com'
-      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}/*/*/*'
+Outputs:
+  HelloWorldApi:
+    Description: "API Gateway endpoint URL for Prod stage for HelloWorld function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello"
+  HelloWorldFunction:
+    Description: "HelloWorld Lambda Function ARN"
+    Value: !GetAtt HelloWorldFunction.Arn
